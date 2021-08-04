@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assignment 2</title>
+    <script>
+      window.onload = function () {
+        // assignment 1
+
+        document.getElementById("three").onclick = function (event) {
+          console.log("three");
+          console.log(event.target, event.currentTarget);
+        };
+        document.getElementById("two").onclick = function (event) {
+          console.log("two");
+          console.log(event.target, event.currentTarget);
+        };
+        document.getElementById("one").onclick = function (event) {
+          console.log("one");
+          console.log(event.target, event.currentTarget);
+        };
+
+        //assignment 2
+
+        var list = ["first", "second"];
+        for (var i in list) {
+          var li = document.createElement("li");
+          var textNode = document.createTextNode(list[i]);
+          var btn = document.createElement("button");
+          btn.innerHTML = "Click Me";
+          console.log(i);
+          btn.onclick = function (i) {
+            alert("index is " + i);
+          }.bind(null, i);
+          li.appendChild(textNode);
+          li.appendChild(btn);
+          document.getElementById("root").appendChild(li);
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="three">
+      Three
+      <div id="two">
+        Two
+        <div id="one">One</div>
+      </div>
+    </div>
+  </body>
+</html>
