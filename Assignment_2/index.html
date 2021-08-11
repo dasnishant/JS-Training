@@ -7,47 +7,254 @@
     <title>Assignment 2</title>
     <script>
       window.onload = function () {
-        // assignment 1
-
-        document.getElementById("three").onclick = function (event) {
-          console.log("three");
-          console.log(event.target, event.currentTarget);
-        };
-        document.getElementById("two").onclick = function (event) {
-          console.log("two");
-          console.log(event.target, event.currentTarget);
-        };
-        document.getElementById("one").onclick = function (event) {
-          console.log("one");
-          console.log(event.target, event.currentTarget);
-        };
-
-        //assignment 2
-
-        var list = ["first", "second"];
-        for (var i in list) {
-          var li = document.createElement("li");
-          var textNode = document.createTextNode(list[i]);
-          var btn = document.createElement("button");
-          btn.innerHTML = "Click Me";
-          console.log(i);
-          btn.onclick = function (i) {
-            alert("index is " + i);
-          }.bind(null, i);
-          li.appendChild(textNode);
-          li.appendChild(btn);
-          document.getElementById("root").appendChild(li);
+        // assignment 1, bubbling and capturing
+        function bubblingAndCapturing() {
+          document.getElementById("three").onclick = function (event) {
+            console.log("bubbling three");
+            console.log(event.target, event.currentTarget);
+          };
+          document.getElementById("two").onclick = function (event) {
+            console.log("bubbling two");
+            console.log(event.target, event.currentTarget);
+          };
+          document.getElementById("one").onclick = function (event) {
+            console.log("bubbling one");
+            console.log(event.target, event.currentTarget);
+          };
+          document.getElementById("three").addEventListener(
+            "click",
+            function (event) {
+              console.log("capturing three");
+              console.log(event.target, event.currentTarget);
+            },
+            { capture: true }
+          );
+          document.getElementById("two").addEventListener(
+            "click",
+            function (event) {
+              console.log("capturing two");
+              console.log(event.target, event.currentTarget);
+            },
+            { capture: true }
+          );
+          document
+            .getElementById("one")
+            .addEventListener("click", function (event) {
+              console.log("capturing one");
+              console.log(event.target, event.currentTarget);
+            });
         }
+        //assignment 2
+        // var list = ["first", "second"];
+        // for (var i in list) {
+        //   var li = document.createElement("li");
+        //   var textNode = document.createTextNode(list[i]);
+        //   var btn = document.createElement("button");
+        //   btn.innerHTML = "Click Me";
+        //   console.log(i);
+        //   btn.onclick = function (i) {
+        //     alert("index is " + i);
+        //   }.bind(null, i);
+        //   li.appendChild(textNode);
+        //   li.appendChild(btn);
+        //   document.getElementById("root").appendChild(li);
+        // }
+
+        //call,apply,bind
+        function callApplyBind() {
+          var obj1 = {
+            name: "nishant",
+          };
+          function print(params) {
+            let name = this.name || "NA";
+            console.log(`Object is ${this} Name is ${name}`, params);
+          }
+          print();
+          print.call(obj1, 1, 2);
+          print.apply(obj1, [1]);
+          var bindedPrint = print.bind(obj1);
+          bindedPrint(0);
+          binding;
+          var obj2 = {
+            name: "nishant",
+            run: function () {
+              console.log(`${this.name} is running `);
+            },
+          };
+          var obj3 = {
+            name: "das",
+          };
+          obj2.run();
+          var bindingFunction = obj2.run.bind(obj3);
+          bindingFunction();
+        }
+
+        //this
+        function thisCode() {
+          console.log(this); //window
+          var obj = {
+            name: "nishant",
+            func: function () {
+              console.log(this);
+            },
+          };
+          function print() {
+            console.log(this);
+          }
+
+          obj.func(); //obj object
+          print(); //window
+          print.bind(obj)(); //obj object
+
+          var a = new print(); //print object
+          print.prototype.myVar = 20;
+          console.log(a.myVar);
+        }
+
+        //var let const
+        function varLetConst() {
+          var a = 10;
+          console.log(a); //scope within this function
+          {
+            let l = 20;
+            const pi = 3.14;
+            console.log(l); //scope within this block
+            console.log(pi); //scope within this block
+            console.log(a); // accessible since within scope
+          }
+          console.log(l); //reference error
+          console.log(pi); //reference error
+        }
+
+        //async programming
+        function asyncExample() {
+          //callback
+          function generic(fn) {
+            setTimeout(fn, 500);
+          }
+
+          generic(function () {
+            console.log("first print");
+            generic(function () {
+              console.log("second print");
+              generic(function () {
+                console.log("third print");
+              });
+              console.log("fourth print");
+            });
+          });
+
+          //promise
+          function promiseEX() {
+            return new Promise((resolve, reject) => {
+              setTimeout(resolve, 500);
+            });
+          }
+
+          promiseEX()
+            .then(() => console.log("first print"))
+            .then(() => promiseEX())
+            .then(() => console.log("second print"))
+            .then(() => promiseEX())
+            .then(() => console.log("third print"));
+
+          // async await
+
+          function asyncEX(str) {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => resolve(str), 500);
+            });
+          }
+
+          async function awaitEX() {
+            var response = await asyncEX("first print");
+            console.log(response);
+          }
+
+          awaitEX();
+          console.log("second print");
+        }
+
+        //promises
+        function promises() {
+          Promise.all([
+            new Promise((resolve, reject) => {
+              resolve("first promise resolved");
+            }),
+            new Promise((resolve, reject) => {
+              resolve("second promise resolved");
+            }),
+          ]).then((response) => console.log(response));
+
+          Promise.all([
+            new Promise((resolve, reject) => {
+              reject("first promise rejected");
+            }),
+            new Promise((resolve, reject) => {
+              resolve("second promise resolved");
+            }),
+          ])
+            .then((response) => console.log(response))
+            .catch((err) => console.log(err));
+
+          Promise.allSettled([
+            new Promise((resolve, reject) => {
+              reject("first promise rejected");
+            }),
+            new Promise((resolve, reject) => {
+              resolve("second promise resolved");
+            }),
+          ]).then((res) => console.log(res));
+
+          Promise.race([
+            new Promise((resolve, reject) => {
+              setTimeout(() => reject("first promise rejected"), 500);
+            }),
+            new Promise((resolve, reject) => {
+              setTimeout(() => resolve("second promise resolve"), 1000);
+            }),
+          ]).then((res) => console.log(res));
+
+          Promise.any([
+            new Promise((resolve, reject) => {
+              setTimeout(() => reject("first promise rejected"), 500);
+            }),
+            new Promise((resolve, reject) => {
+              setTimeout(() => resolve("second promise resolve"), 1000);
+            }),
+          ]).then((res) => console.log(res));
+        }
+
+        //bubblingAndCapturing
+        //callApplyBind
+        // thisCode();
+        // varLetConst();
+        // asyncExample();
+        promises();
       };
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <div id="three">
+    <img
+      id="arizona"
+      src="https://images.unsplash.com/photo-1550330562-b055aa030d73?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bGFyZ2UlMjBmb3JtYXR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
+      alt=""
+      style="width: 200px; height: 200px"
+    />
+    <img
+      id="camera"
+      src="https://images.unsplash.com/photo-1596265371388-43edbaadab94?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bGFyZ2UlMjBmb3JtYXR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
+      alt=""
+      style="width: 200px; height: 200px"
+    />
+    <div id="three" style="padding: 20px; background-color: aqua">
       Three
-      <div id="two">
+      <div id="two" style="padding: 20px; background-color: cadetblue">
         Two
-        <div id="one">One</div>
+        <div id="one" style="padding: 20px; background-color: cornflowerblue">
+          One
+        </div>
       </div>
     </div>
   </body>

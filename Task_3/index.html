@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Function</title>
+  </head>
+  <body>
+    1. Print from 1 to 10 each after 1 sec w/o using setInterval, 2. Convert
+    function expression to arrow function, 
+  </body>
+  <script>
+    for (var i = 1; i <= 10; i++) {
+      let counter = i;
+      setTimeout(function () {
+        console.log(counter);
+      }, 1000 * i);
+    }
+
+    //function expression
+
+    // function ask(question, yes, no) {
+    //   if (confirm(question)) yes();
+    //   else no();
+    // }
+
+    // ask(
+    //   "Do you agree?",
+    //   function () {
+    //     alert("You agreed.");
+    //   },
+    //   function () {
+    //     alert("You canceled the execution.");
+    //   }
+    // );
+
+    //arrow function
+
+    // let ask = (question, yes, no) => {
+    //   if (confirm(question)) yes();
+    //   else no();
+    // };
+
+    // ask(
+    //   "Do you agree?",
+    //   function () {
+    //     alert("You agreed.");
+    //   },
+    //   function () {
+    //     alert("You canceled the execution.");
+    //   }
+    // );
+  </script>
+</html>
